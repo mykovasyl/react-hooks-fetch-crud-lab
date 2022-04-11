@@ -1,13 +1,27 @@
 import React from "react";
 
-function QuestionItem({ question }) {
-  const { id, prompt, answers, correctIndex } = question;
-
+function QuestionItem({
+  id,
+  prompt,
+  answers,
+  correctIndex,
+  onQuestionDelete,
+  onQuestionUpdate,
+}) {
   const options = answers.map((answer, index) => (
     <option key={index} value={index}>
       {answer}
     </option>
   ));
+
+  function handleDelete() {
+    onQuestionDelete(id);
+  }
+
+  function handleChange(e) {
+    const newIndex = e.target.value;
+    onQuestionUpdate(id, newIndex);
+  }
 
   return (
     <li>
@@ -15,9 +29,11 @@ function QuestionItem({ question }) {
       <h5>Prompt: {prompt}</h5>
       <label>
         Correct Answer:
-        <select defaultValue={correctIndex}>{options}</select>
+        <select defaultValue={correctIndex} onChange={handleChange}>
+          {options}
+        </select>
       </label>
-      <button>Delete Question</button>
+      <button onClick={handleDelete}>Delete Question</button>
     </li>
   );
 }
